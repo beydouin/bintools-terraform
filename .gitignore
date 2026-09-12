@@ -1,0 +1,31 @@
+# Terraform working directories
+**/.terraform/*
+
+# Terraform state contains infrastructure data and may contain sensitive values
+*.tfstate
+*.tfstate.*
+
+# Terraform variable files may contain credentials or other secrets
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Terraform crash and override files
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local plan files
+*.tfplan
+
+# Editor / operating system files
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Keep .terraform.lock.hcl under version control.
