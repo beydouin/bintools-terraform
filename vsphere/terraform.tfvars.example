@@ -1,0 +1,11 @@
+# Credentials are intentionally not stored here.
+# Supply TF_VAR_vsphere_user and TF_VAR_vsphere_password from the shell or
+# another approved secret source.
+
+# A VM only needs entries for settings that differ from the common defaults.
+vms = {
+  # "example-00.universe.hm" = {
+  #   num_cpus  = 2
+  #   memory_mb = 4096
+  # }
+}
