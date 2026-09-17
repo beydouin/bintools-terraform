@@ -1,0 +1,34 @@
+---
+- name: Verify required VMware Vault variables are available
+  ansible.builtin.assert:
+    that:
+      - vmware_hostname is defined
+      - vmware_username is defined
+      - vmware_password is defined
+      - vmware_hostname | length > 0
+      - vmware_username | length > 0
+      - vmware_password | length > 0
+    fail_msg: Required VMware credentials were not loaded from Ansible Vault.
+  no_log: true
+
+- name: Verify Terraform executable is installed
+  ansible.builtin.command: terraform version
+  register: terraform_version_check
+  changed_when: false
+
+- name: Verify Terraform project directory exists
+  ansible.builtin.stat:
+    path: "{{ terraform_project_dir }}"
+  register: terraform_project_check
+
+- name: Require Terraform project directory
+  ansible.builtin.assert:
+    that:
+      - terraform_project_check.stat.isdir | default(false)
+    fail_msg: "Terraform project directory does not exist: {{ terraform_project_dir }}"
+
+- name: Validate requested Terraform action
+  ansible.builtin.assert:
+    that:
+      - terraform_action in ['plan', 'apply']
+    fail_msg: "terraform_action must be plan or apply."
