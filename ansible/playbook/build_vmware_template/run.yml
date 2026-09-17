@@ -1,0 +1,27 @@
+---
+- name: Build VMware golden template with Terraform
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - "{{ lookup('env', 'HOME') }}/bintools-home/ansible/playbooks/group_vars/all/vault.yml"
+
+  vars:
+    build_vmware_template_root: "{{ playbook_dir }}/../../.."
+
+  tasks:
+    - name: Load VMware template build defaults
+      ansible.builtin.include_vars:
+        file: defaults/main.yml
+
+    - name: Run pre-flight checks
+      ansible.builtin.include_tasks: tasks/preflight.yml
+
+    - name: Run Terraform plan
+      ansible.builtin.include_tasks: tasks/terraform_plan.yml
+      when: terraform_action in ['plan', 'apply']
+
+    - name: Run Terraform apply
+      ansible.builtin.include_tasks: tasks/terraform_apply.yml
+      when: terraform_action == 'apply'
