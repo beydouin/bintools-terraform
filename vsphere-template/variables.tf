@@ -54,7 +54,7 @@ variable "template_folder" {
 
 variable "template_name" {
   type    = string
-  default = "template-01.universe.hm"
+  default = "template-00.universe.hm"
 }
 
 variable "template_ip" {
