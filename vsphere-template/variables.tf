@@ -58,9 +58,15 @@ variable "template_name" {
 }
 
 variable "template_ip" {
-  description = "Reserved DHCP identity assigned after VMware generates the VM MAC address."
+  description = "Reserved DHCP IP for the template. Ansible overrides this from the DHCP reservation when one exists."
   type        = string
   default     = "192.168.3.11"
+}
+
+variable "template_mac_address" {
+  description = "Optional reserved DHCP MAC address. When null, vSphere generates the VM MAC address."
+  type        = string
+  default     = null
 }
 
 variable "install_iso_path" {
