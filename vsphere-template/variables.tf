@@ -80,3 +80,14 @@ variable "attach_install_iso" {
   type        = bool
   default     = true
 }
+
+variable "template_boot_order" {
+  description = "UEFI boot sequence: network first for PXE installation, disk first after installation."
+  type        = string
+  default     = "ethernet,disk,cdrom"
+
+  validation {
+    condition     = contains(["ethernet,disk,cdrom", "disk,ethernet,cdrom"], var.template_boot_order)
+    error_message = "Boot order must be ethernet,disk,cdrom or disk,ethernet,cdrom."
+  }
+}
