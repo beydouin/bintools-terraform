@@ -12,10 +12,7 @@ resource "vsphere_virtual_machine" "template" {
   firmware  = "efi"
   scsi_type = "pvscsi"
 
-  # Network first for unattended PXE install; switch to disk first after OS installation.
-  extra_config = {
-    "efi.bootOrder" = var.template_boot_order
-  }
+  # Ansible configures the actual vSphere boot device order after Terraform apply.
 
   # PXE boots the installer; the attached DVD is used by Anaconda as inst.repo=cdrom.
 
