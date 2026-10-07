@@ -34,7 +34,7 @@ variable "esxi_host_name" {
 
 variable "vm_datastore_name" {
   type    = string
-  default = "SYNOLOGY-LUN-01"
+  default = "LocalDS_esxi-00.universe.hm"
 }
 
 variable "iso_datastore_name" {
