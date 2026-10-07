@@ -12,6 +12,10 @@ resource "vsphere_virtual_machine" "template" {
   firmware  = "efi"
   scsi_type = "pvscsi"
 
+  # PXE must boot before the attached OL10 DVD. The DVD remains attached
+  # only as Anaconda's installation repository (inst.repo=cdrom).
+  boot_order = ["network", "disk"]
+
   wait_for_guest_ip_timeout  = 0
   wait_for_guest_net_timeout = 0
 
