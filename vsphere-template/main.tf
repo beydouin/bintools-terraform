@@ -12,11 +12,7 @@ resource "vsphere_virtual_machine" "template" {
   firmware  = "efi"
   scsi_type = "pvscsi"
 
-  # PXE first; the attached DVD is used by Anaconda as inst.repo=cdrom.
-  # The VM uses EFI firmware, so use the EFI boot-order VMX setting.
-  extra_config = {
-    "efi.bootOrder" = "ethernet0,hdd"
-  }
+  # PXE boots the installer; the attached DVD is used by Anaconda as inst.repo=cdrom.
 
   wait_for_guest_ip_timeout  = 0
   wait_for_guest_net_timeout = 0
