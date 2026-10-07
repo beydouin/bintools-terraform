@@ -70,7 +70,7 @@ variable "install_iso_path" {
 }
 
 variable "attach_install_iso" {
-  description = "Attach the OL10 U0 DVD after the generated MAC has been registered in DHCP."
+  description = "Attach the OL10 U0 DVD so PXE-started Anaconda can use inst.repo=cdrom."
   type        = bool
-  default     = false
+  default     = true
 }
