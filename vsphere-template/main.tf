@@ -28,8 +28,10 @@ resource "vsphere_virtual_machine" "template" {
   EOT
 
   network_interface {
-    network_id   = data.vsphere_network.template.id
-    adapter_type = "vmxnet3"
+    network_id     = data.vsphere_network.template.id
+    adapter_type   = "vmxnet3"
+    use_static_mac = var.template_mac_address != null
+    mac_address    = var.template_mac_address
   }
 
   disk {
