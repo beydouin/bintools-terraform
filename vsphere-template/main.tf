@@ -12,9 +12,12 @@ resource "vsphere_virtual_machine" "template" {
   firmware  = "efi"
   scsi_type = "pvscsi"
 
+  # Retain VMware VM execution logs for boot and installer diagnostics.
+  enable_logging = true
+
   # Ansible configures the actual vSphere boot device order after Terraform apply.
 
-  # PXE boots the installer; the attached DVD is used by Anaconda as inst.repo=cdrom.
+  # PXE boots the installer; Anaconda retrieves installation packages over HTTP.
 
   wait_for_guest_ip_timeout  = 0
   wait_for_guest_net_timeout = 0
@@ -25,7 +28,7 @@ resource "vsphere_virtual_machine" "template" {
     Release: 10.0 (U0)
     Architecture: x86_64
     Purpose: Base golden template for Terraform-provisioned Linux VMs
-    Installation Media: OracleLinux-R10-U0-x86_64-dvd.iso
+    Installation Source: HTTP repository on pxe-00.universe.hm
     Managed by: Terraform / Ansible
   EOT
 
