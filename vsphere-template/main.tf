@@ -6,7 +6,7 @@ resource "vsphere_virtual_machine" "template" {
   host_system_id   = data.vsphere_host.esxi.id
 
   num_cpus = 1
-  memory   = 4096
+  memory   = 2048
 
   guest_id  = "rhel9_64Guest"
   firmware  = "efi"
