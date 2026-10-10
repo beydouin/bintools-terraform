@@ -8,9 +8,6 @@ resource "vsphere_virtual_machine" "template" {
   num_cpus = 1
   memory   = 2048
 
-  # Keep VM off until Ansible registers its generated MAC with Kea DHCP.
-  power_on = false
-
   guest_id  = "rhel9_64Guest"
   firmware  = "efi"
   scsi_type = "pvscsi"
