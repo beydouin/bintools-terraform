@@ -32,11 +32,10 @@ resource "vsphere_virtual_machine" "template" {
     Managed by: Terraform / Ansible
   EOT
 
-  network_interface {
-    network_id     = data.vsphere_network.template.id
-    adapter_type   = "vmxnet3"
-    use_static_mac = var.template_mac_address != null
-    mac_address    = var.template_mac_address
+  # NIC is deliberately attached later by Ansible while the VM is off.
+  # A newly created VM cannot PXE boot without a NIC.
+  lifecycle {
+    ignore_changes = [network_interface]
   }
 
   disk {
