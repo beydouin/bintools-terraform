@@ -3,8 +3,8 @@ output "template_name" {
 }
 
 output "template_mac_address" {
-  description = "VMware-generated MAC address to pass to the DHCP automation."
-  value       = vsphere_virtual_machine.template.network_interface[0].mac_address
+  description = "NIC is attached by Ansible after VM creation; MAC is obtained from vCenter."
+  value       = null
 }
 
 output "template_reserved_ip" {
