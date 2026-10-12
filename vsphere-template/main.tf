@@ -32,8 +32,13 @@ resource "vsphere_virtual_machine" "template" {
     Managed by: Terraform / Ansible
   EOT
 
-  # NIC is deliberately attached later by Ansible while the VM is off.
-  # A newly created VM cannot PXE boot without a NIC.
+  # The vSphere provider requires a NIC for non-OVF VM creation.
+  # Ansible handles the DHCP reservation before connecting/booting this NIC.
+  network_interface {
+    network_id   = data.vsphere_network.template.id
+    adapter_type = "vmxnet3"
+  }
+
   lifecycle {
     ignore_changes = [network_interface]
   }
