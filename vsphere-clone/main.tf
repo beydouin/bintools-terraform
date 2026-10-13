@@ -80,6 +80,7 @@ data "vsphere_network" "net" {
 
 resource "vsphere_virtual_machine" "clone" {
   name             = var.vm_name
+  power_on         = false
   folder           = var.vm_folder
   resource_pool_id = data.vsphere_host.esxi.resource_pool_id
   datastore_id     = data.vsphere_datastore.ds.id
