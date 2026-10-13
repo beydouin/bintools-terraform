@@ -15,18 +15,50 @@ provider "vsphere" {
   allow_unverified_ssl = false
 }
 
-variable "vsphere_user" { type = string; sensitive = true }
-variable "vsphere_password" { type = string; sensitive = true }
-variable "vsphere_server" { type = string; default = "vcenter-00.universe.hm" }
-variable "datacenter_name" { type = string; default = "HQ-DATACENTER" }
-variable "source_template_name" { type = string; default = "template-00.universe.hm" }
-variable "vm_name" { type = string }
-variable "vm_folder" { type = string }
-variable "esxi_host_name" { type = string; default = "esxi-00.universe.hm" }
-variable "datastore_name" { type = string }
-variable "network_name" { type = string }
-variable "num_cpus" { type = number; default = 1 }
-variable "memory_mb" { type = number; default = 2048 }
+variable "vsphere_user" {
+  type = string
+  sensitive = true
+}
+variable "vsphere_password" {
+  type = string
+  sensitive = true
+}
+variable "vsphere_server" {
+  type = string
+  default = "vcenter-00.universe.hm"
+}
+variable "datacenter_name" {
+  type = string
+  default = "HQ-DATACENTER"
+}
+variable "source_template_name" {
+  type = string
+  default = "template-00.universe.hm"
+}
+variable "vm_name" {
+  type = string
+}
+variable "vm_folder" {
+  type = string
+}
+variable "esxi_host_name" {
+  type = string
+  default = "esxi-00.universe.hm"
+}
+variable "datastore_name" {
+  type = string
+}
+variable "network_name" {
+  type = string
+}
+variable "num_cpus" {
+  type = number
+  default = 1
+}
+variable "memory_mb" {
+  type = number
+  default = 2048
+}
 
 data "vsphere_datacenter" "dc" { name = var.datacenter_name }
 data "vsphere_virtual_machine" "source" {
@@ -80,5 +112,9 @@ resource "vsphere_virtual_machine" "clone" {
   wait_for_guest_net_timeout = 0
 }
 
-output "clone_name" { value = vsphere_virtual_machine.clone.name }
-output "clone_mac_address" { value = vsphere_virtual_machine.clone.network_interface[0].mac_address }
+output "clone_name" {
+  value = vsphere_virtual_machine.clone.name
+}
+output "clone_mac_address" {
+  value = vsphere_virtual_machine.clone.network_interface[0].mac_address
+}
