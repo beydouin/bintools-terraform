@@ -22,7 +22,7 @@ variable "datacenter_name" { type = string; default = "HQ-DATACENTER" }
 variable "source_template_name" { type = string; default = "template-00.universe.hm" }
 variable "vm_name" { type = string }
 variable "vm_folder" { type = string }
-variable "resource_pool_name" { type = string }
+variable "esxi_host_name" { type = string; default = "esxi-00.universe.hm" }
 variable "datastore_name" { type = string }
 variable "network_name" { type = string }
 variable "num_cpus" { type = number; default = 1 }
@@ -33,8 +33,8 @@ data "vsphere_virtual_machine" "source" {
   name          = var.source_template_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
-data "vsphere_resource_pool" "pool" {
-  name          = var.resource_pool_name
+data "vsphere_host" "esxi" {
+  name          = var.esxi_host_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 data "vsphere_datastore" "ds" {
@@ -49,7 +49,7 @@ data "vsphere_network" "net" {
 resource "vsphere_virtual_machine" "clone" {
   name             = var.vm_name
   folder           = var.vm_folder
-  resource_pool_id = data.vsphere_resource_pool.pool.id
+  resource_pool_id = data.vsphere_host.esxi.resource_pool_id
   datastore_id     = data.vsphere_datastore.ds.id
   num_cpus         = var.num_cpus
   memory           = var.memory_mb
@@ -62,10 +62,14 @@ resource "vsphere_virtual_machine" "clone" {
     adapter_type = data.vsphere_virtual_machine.source.network_interface_types[0]
   }
 
-  disk {
-    label            = "disk0"
-    size             = data.vsphere_virtual_machine.source.disks[0].size
-    thin_provisioned = true
+  dynamic "disk" {
+    for_each = data.vsphere_virtual_machine.source.disks
+    content {
+      label            = disk.value.label
+      size             = disk.value.size
+      unit_number      = disk.value.unit_number
+      thin_provisioned = disk.value.thin_provisioned
+    }
   }
 
   clone {
